@@ -25,9 +25,13 @@ public class DataCollectionScheduler {
             "제주 맛집"
     );
 
-    // 매일 오후 10시 실행
-    @Scheduled(cron = "0 0 22 * * *")
+    // 매일 오후 8시 실행
+    @Scheduled(cron = "0 10 22 * * *")
     public void collectRestaurantData() {
+        runCollection();
+    }
+
+    private void runCollection() {
         log.info("=== 맛집 데이터 자동 수집 시작 ===");
 
         for (String keyword : KEYWORDS) {

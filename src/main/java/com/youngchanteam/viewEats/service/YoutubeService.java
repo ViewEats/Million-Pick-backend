@@ -54,15 +54,23 @@ public class YoutubeService {
                     var count = v.getStatistics().getViewCount();
                     return count != null && count.longValue() >= MIN_VIEW_COUNT;
                 })
-                .map(v -> YoutubeVideoResponse.builder()
-                        .videoId(v.getId())
-                        .title(v.getSnippet().getTitle())
-                        .channelName(v.getSnippet().getChannelTitle())
-                        .viewCount(v.getStatistics().getViewCount().longValue())
-                        .thumbnailUrl(v.getSnippet().getThumbnails().getHigh().getUrl())
-                        .youtubeUrl("https://www.youtube.com/watch?v=" + v.getId())
-                        .description(v.getSnippet().getDescription())
-                        .build())
+                .map(v -> {
+                    var thumbnails = v.getSnippet().getThumbnails();
+                    String thumbnailUrl = (thumbnails != null && thumbnails.getHigh() != null)
+                            ? thumbnails.getHigh().getUrl()
+                            : (thumbnails != null && thumbnails.getMedium() != null)
+                            ? thumbnails.getMedium().getUrl()
+                            : null;
+                    return YoutubeVideoResponse.builder()
+                            .videoId(v.getId())
+                            .title(v.getSnippet().getTitle())
+                            .channelName(v.getSnippet().getChannelTitle())
+                            .viewCount(v.getStatistics().getViewCount().longValue())
+                            .thumbnailUrl(thumbnailUrl)
+                            .youtubeUrl("https://www.youtube.com/watch?v=" + v.getId())
+                            .description(v.getSnippet().getDescription())
+                            .build();
+                })
                 .toList();
     }
 }

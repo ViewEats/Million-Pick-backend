@@ -6,8 +6,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/vieweats
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,11 +20,11 @@ spring:
         format_sql: true
 
 youtube:
-  api-key: ${YOUTUBE_API_KEY}
+  api-key: ${youtube.api-key}
   application-name: viewEats
 
 gemini:
-  api-key: ${GEMINI_API_KEY}
+  api-key: ${gemini.api-key}
 
 kakao:
-  api-key: ${KAKAO_API_KEY}
+  api-key: ${kakao.api-key}

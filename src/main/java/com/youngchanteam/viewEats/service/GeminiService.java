@@ -17,7 +17,7 @@ import java.util.Map;
 public class GeminiService {
 
     private static final String GEMINI_API_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+            "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
     private static final int MAX_DESCRIPTION_LENGTH = 2000;
 
     private final RestClient restClient = RestClient.create();
@@ -56,6 +56,8 @@ public class GeminiService {
         );
 
         try {
+            Thread.sleep(3000); // 503 과부하 방지용 딜레이
+
             String response = restClient.post()
                     .uri(GEMINI_API_URL + "?key=" + apiKey)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -77,6 +79,9 @@ public class GeminiService {
             String jsonArray = text.substring(start, end + 1);
 
             return objectMapper.readValue(jsonArray, new TypeReference<List<String>>() {});
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return List.of();
         } catch (Exception e) {
             log.warn("Gemini API 식당명 추출 실패 - 영상: {} / 오류: {}", title, e.getMessage());
             return List.of();
