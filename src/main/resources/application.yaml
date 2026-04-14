@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: viewEats
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vieweats
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+youtube:
+  api-key: ${YOUTUBE_API_KEY}
+  application-name: viewEats
+
+gemini:
+  api-key: ${GEMINI_API_KEY}
+
+kakao:
+  api-key: ${KAKAO_API_KEY}
